@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cpuload
+  labels:
+    app: cpuload
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: cpuload
+  template:
+    metadata:
+      labels:
+        app: cpuload
+    spec:
+      containers:
+      - name: cpuload
+        image: shafinhasnat/cpuload:latest
+        ports:
+        - containerPort: 8080
+        resources:
+          limits:
+            cpu: "500m" # Restrict CPU usage
+          requests:
+            cpu: "200m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cpuload-service
+spec:
+  selector:
+    app: cpuload
+  ports:
+    - protocol: TCP
+      port: 8001
+      targetPort: 8080
+  type: ClusterIP
