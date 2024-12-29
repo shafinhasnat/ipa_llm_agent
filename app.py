@@ -1,12 +1,13 @@
 from flask import Flask, request, jsonify
 import requests
+import os
 from prompt import gemini_prompt
 app = Flask(__name__)
 
 BASE_URL = {
     "gemini-1.5-flash-latest": {
         "URL": "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=",
-        "API_KEY": "",
+        "API_KEY": os.getenv('GEMINI_API_KEY'),
     }
 }
 
@@ -28,6 +29,7 @@ def askllm():
     resp['status'] = 'success'
     resp['message'] = 'Response from Gemini API'
     resp['replica_count'] = int(replica_count)
+    print(resp)
     return jsonify(resp), 200
 
 if __name__ == '__main__':
