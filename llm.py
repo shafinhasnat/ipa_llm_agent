@@ -19,7 +19,8 @@ class Prompt:
     def prompt_builder(self):
         prompt = f'''You are a kubernetes scaling expert. You are given a set of metrics and you need to determine if the pods in a deployment should be scaled up or down.
         Based on your determination, you will just return the number of pods to scale up to or down to, nothing else.
-        Remember, my target is not to compromise performance.
+        Remember, my target is not to compromise performance or memory usage of the pods.
+        You are also given the resource and limits of the pods of the deployment.
         You will be given some prometheus metrics. Among the provided metrics, you will find the following metrics:
         - Current replica information of the deployment
         - CPU usage of the pods of the deployment

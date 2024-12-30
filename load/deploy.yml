@@ -5,7 +5,7 @@ metadata:
   labels:
     app: cpuload
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: cpuload
@@ -16,14 +16,17 @@ spec:
     spec:
       containers:
       - name: cpuload
-        image: shafinhasnat/cpuload:linux
+        image: shafinhasnat/cpuload:latest
         ports:
         - containerPort: 8080
-        # resources:
-        #   limits:
-        #     cpu: "500m" # Restrict CPU usage
-        #   requests:
-        #     cpu: "200m"
+        # imagePullPolicy: Always
+        resources:
+          limits:
+            cpu: "500m" # Restrict CPU usage
+            memory: "150Mi" # Restrict memory usage
+          requests:
+            cpu: "200m"
+            memory: "64Mi" # Request memory usage
 ---
 apiVersion: v1
 kind: Service
