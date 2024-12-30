@@ -6,8 +6,9 @@ def prompt_builder(metrics):
     - Current replica information of the deployment
     - CPU usage of the pods of the deployment
     - Memory usage of the pods of the deployment
+    You might also given resource and limits of the pods of the deployment.
     There might be other metrics as well. You will also given the promql, so figure out yourself which metrics are relevant.
-    In this metrics, you will find timestamp and value of the metrics.
+    In this metrics, you will find timestamp and value of the metrics. Timestamp is in unix time. Focus on the change of the metrics value over time.
     Here are the promql and their corresponding metrics-
     {metrics}
     '''
