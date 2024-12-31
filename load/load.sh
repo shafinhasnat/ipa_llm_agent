@@ -9,5 +9,7 @@ for i in {1..10}; do
     ) &
 done
 
+
+
 # Wait for all background processes
 wait

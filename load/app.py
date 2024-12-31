@@ -14,7 +14,7 @@ def cpu_intensive_task(n):
 @app.route('/load/<int:seconds>')
 def load_cpu_ram(seconds):
     # Create a large list to consume RAM
-    memory_load = [0] * (10 * 1024 * 1024)  # Allocate ~80MB
+    memory_load = [0] * (seconds * 1024 * 1024)  # Allocate ~80MB
     
     # CPU intensive calculation
     start_time = time.time()
