@@ -23,7 +23,7 @@ class Prompt:
     def __init__(self, metrics):
         self.metrics = metrics
     def prompt_builder(self):
-        prompt = f'''You are given a set of metrics for a Kubernetes deployment, including the current replica count, CPU usage per pod, memory usage per pod, and node available memory. Your task is to determine the optimal number of replicas and resource requests/limits to ensure the deployment operates efficiently without running out of resources or being OOM-killed. The goal is to maximize resource efficiency while ensuring stability, scalability, and resilience to workload spikes.
+        prompt = f'''You are given a set of metrics for a Kubernetes deployment, including the current replica count, CPU usage per pod, memory usage per pod, node available memory and events of the pods. Your task is to determine the optimal number of replicas and resource requests/limits to ensure the deployment operates efficiently without running out of resources or being OOM-killed. The goal is to maximize resource efficiency while ensuring stability, scalability, and resilience to workload spikes.
 
 Steps to Follow:
 Analyze Resource Usage:

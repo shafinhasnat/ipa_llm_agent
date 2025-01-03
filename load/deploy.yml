@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: cpuload
-        image: shafinhasnat/cpuload:linux
+        image: shafinhasnat/cpuload
         ports:
         - containerPort: 8080
         # imagePullPolicy: Always
