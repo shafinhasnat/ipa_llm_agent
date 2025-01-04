@@ -23,9 +23,10 @@ class Prompt:
     def __init__(self, metrics):
         self.metrics = metrics
     def prompt_builder(self):
-        prompt = f'''You are given a set of metrics for a Kubernetes deployment, including the current replica count, CPU usage per pod, memory usage per pod, node available memory and events of the pods. Your task is to determine the optimal number of replicas and resource requests/limits to ensure the deployment operates efficiently without running out of resources or being OOM-killed. The goal is to maximize resource efficiency while ensuring stability, scalability, and resilience to workload spikes.
+        prompt = f'''You are given a set of metrics for a Kubernetes deployment, including the current replica count, CPU usage per pod, memory usage per pod, node available memory, events of the pods, and HTTP request rate. Your task is to determine the optimal number of replicas and resource requests/limits to ensure the deployment operates efficiently without running out of resources or being OOM-killed. The goal is to maximize resource efficiency while ensuring stability, scalability, and resilience to workload spikes.
 
 Steps to Follow:
+
 Analyze Resource Usage:
 
 Evaluate the average, peak, and spike CPU and memory usage of all existing pods over a suitable time range.
@@ -46,10 +47,14 @@ Determine Replica Count:
 Ensure the combined workload can be handled by the specified number of replicas without over-utilizing resources.
 Reduce replicas only if the remaining pods can handle the workload within the adjusted resource limits.
 Add replicas if necessary to distribute the workload, ensuring no single pod exceeds 80% of its allocated resources under peak usage.
+HTTP Request Handling:
+If HTTP requests are significantly low, 1 replica is acceptable to avoid unnecessary resource consumption. Take resource usage into account.
+If there is a significant hike in HTTP requests, increase the number of replicas to handle the traffic efficiently. Ensure replicas scale up based on the request rate to prevent overload on any single pod.
 Account for Node Resource Availability:
 
 Ensure the combined resource requests of all pods (including replicas) do not exceed the node's available resources.
 Leave room for other workloads and Kubernetes system components.
+
 Output Format:
 Return the following configuration in JSON format:
 

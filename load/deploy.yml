@@ -42,3 +42,24 @@ spec:
       port: 8001
       targetPort: 8080
   type: ClusterIP
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-cpuload
+  namespace: cpuload
+spec:
+  rules:
+  
+  - host: cpuload.shafinhasnat.me
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: cpuload-service
+            port:
+              number: 8001
+  ingressClassName: nginx
