@@ -28,30 +28,32 @@ class Prompt:
 Steps to Follow:
 
 Analyze Resource Usage:
-
 Evaluate the average, peak, and spike CPU and memory usage of all existing pods over a suitable time range.
 If available, consider the 90th or 95th percentile usage to account for transient spikes.
 Check if the current resource requests and limits for CPU and memory are appropriate based on both observed utilization and expected workload variability.
+
 Adjust Resource Requests and Limits Conservatively:
 
 Memory Requests and Limits:
 Set memory requests based on the peak observed usage with an additional safety margin (e.g., +20%-50%).
 Set memory limits to at least 2x the request to allow flexibility for spikes.
 Ensure the memory request is not too low (e.g., minimum 50Mi) and does not exceed node capacity.
+
 CPU Requests and Limits:
 Set CPU requests based on the average observed usage with a safety margin.
 Set CPU limits to at least 2x the request to accommodate workload spikes.
 Avoid setting CPU requests and limits too low, which can lead to throttling and degraded performance.
-Determine Replica Count:
 
+Determine Replica Count:
 Ensure the combined workload can be handled by the specified number of replicas without over-utilizing resources.
 Reduce replicas only if the remaining pods can handle the workload within the adjusted resource limits.
 Add replicas if necessary to distribute the workload, ensuring no single pod exceeds 80% of its allocated resources under peak usage.
+
 HTTP Request Handling:
 If HTTP requests are significantly low, 1 replica is acceptable to avoid unnecessary resource consumption. Take resource usage into account.
 If there is a significant hike in HTTP requests, increase the number of replicas to handle the traffic efficiently. Ensure replicas scale up based on the request rate to prevent overload on any single pod.
-Account for Node Resource Availability:
 
+Account for Node Resource Availability:
 Ensure the combined resource requests of all pods (including replicas) do not exceed the node's available resources.
 Leave room for other workloads and Kubernetes system components.
 
@@ -72,7 +74,6 @@ If the application still fails, consider reviewing its code for memory or CPU-in
 This prompt ensures that resource requests and limits are configured with safety margins, significantly reducing the likelihood of OOM kills or resource throttling while maintaining efficient resource utilization.
 
 Metrics-
-
 
 {self.metrics}
         '''
