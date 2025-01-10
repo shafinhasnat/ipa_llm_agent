@@ -1,10 +1,22 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from llm import LLM, Prompt
 import os
 app = Flask(__name__)
 
 API_KEY = os.getenv('GEMINI_API_KEY')
 MODEL_NAME = "gemini-1.5-flash"
+
+def read_last_n_lines(file_path="./llm.log", n: int = 300) -> list:
+    try:
+        with open(file_path, 'r') as f:
+            return list(f.readlines()[-n:])
+    except Exception as e:
+        return []
+
+@app.route('/')
+def show_logs():
+    logs = read_last_n_lines()
+    return render_template('logs.html', logs=logs)
 
 @app.route('/askllm', methods=['POST'])
 def askllm():

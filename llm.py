@@ -15,14 +15,14 @@ class LLM:
             filename='llm.log',
             level=logging.INFO,
             format='%(asctime)s - %(message)s',
-            datefmt='%Y-%m-%d %H:%M:%S'
+            datefmt='%Y-%m-%d %H:%M:%S',
         )
         
     def ask(self, prompt):
         try:
             response = self.client.models.generate_content(model=self.model, contents=prompt)
             response_text = response.text
-            logging.info(f"\n------- PROMPT -------\n{prompt}\n------- GEMINI RESPONSE -------\n{response_text}\n------------------------\n")
+            logging.info(f"------- PROMPT -------\n{prompt}\n------- GEMINI RESPONSE -------\n{response_text}\n------------------------\n")
             if DUMP_DATASEST:
                 self.dump_dataset(prompt, response_text)
             response_text = response_text.split("```json")[1].split("```")[0].strip()
@@ -30,7 +30,6 @@ class LLM:
         except Exception as e:
             logging.error(f"Error: {str(e)}")
             return {"status": "error", "text": None}
-        
     def dump_dataset(self, prompt, response_text):
         training_data = {
             "input": prompt,
