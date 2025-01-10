@@ -1,23 +1,51 @@
+import os
 import json
+import logging
+from datetime import datetime
 from google import genai
 # from google.genai import types
+
+DUMP_DATASEST = os.getenv("DUMP_DATASET", False)
 
 class LLM:
     def __init__(self, api_key, model):
         self.client = genai.Client(api_key=api_key)
         self.model = model
+        logging.basicConfig(
+            filename='llm.log',
+            level=logging.INFO,
+            format='%(asctime)s - %(message)s',
+            datefmt='%Y-%m-%d %H:%M:%S'
+        )
         
     def ask(self, prompt):
         try:
             response = self.client.models.generate_content(model=self.model, contents=prompt)
             response_text = response.text
-            print("---- GEMINI RESPONSE ----\n",response_text,"\n---- ----")
+            logging.info(f"\n------- PROMPT -------\n{prompt}\n------- GEMINI RESPONSE -------\n{response_text}\n------------------------\n")
+            if DUMP_DATASEST:
+                self.dump_dataset(prompt, response_text)
             response_text = response_text.split("```json")[1].split("```")[0].strip()
             return {"status": "success", "text": json.loads(response_text)}
-            # return {"status": "success", "text": {'replicas': 2, 'cpu_limit': '500m', 'memory_limit': '150Mi', 'cpu_request': '200m', 'memory_request': '64Mi'}}
         except Exception as e:
-            print(e)
+            logging.error(f"Error: {str(e)}")
             return {"status": "error", "text": None}
+        
+    def dump_dataset(self, prompt, response_text):
+        training_data = {
+            "input": prompt,
+            "output": response_text
+        }
+        try:
+            with open('training.json', 'r') as f:
+                existing_data = json.load(f)
+        except (FileNotFoundError, json.JSONDecodeError):
+            existing_data = []
+            
+        existing_data.append(training_data)
+        
+        with open('training.json', 'w') as f:
+            json.dump(existing_data, f, indent=2)
         
 class Prompt:
     def __init__(self, metrics):
