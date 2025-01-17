@@ -1,0 +1,3 @@
+ipaagent.shafinhasnat.me {
+    reverse_proxy ipaagent:5000
+}

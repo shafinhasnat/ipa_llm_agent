@@ -1,7 +1,7 @@
 FROM python:3.10
 
-ENV PYTHONUNBUFFERED 1
-ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONDONTWRITEBYTECODE=1
 
 WORKDIR /app
 
@@ -10,4 +10,4 @@ RUN pip install -r requirements.txt
 
 COPY . .
 
-CMD ["python", "app.py"]
+CMD ["gunicorn", "--bind=0.0.0.0:5000","app:app"]

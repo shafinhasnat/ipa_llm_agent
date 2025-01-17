@@ -1,0 +1,14 @@
+services:
+  ipaagent:
+    image: shafinhasnat/ipaagent
+    environment:
+      - GEMINI_API_KEY=
+  caddy:
+    image: caddy:2.9.1-alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile.template:/etc/caddy/Caddyfile
+    depends_on:
+      - ipaagent
